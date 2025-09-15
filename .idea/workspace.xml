@@ -4,33 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="905c2962-bfb3-4845-a42f-bb8ecd6161d9" name="Changes" comment="Initial committment">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/BowlingGame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/BowlingGameApp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/FrameDisplay.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/FrameValues.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/InputControlValues.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Roll.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/filter/DataFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/filter/FilterValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/filter/ID.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/filter/IDFilterApp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/filter/IDValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/filter/LabelValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/filter/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/filter/ResultValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/filter/ValueValid.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/BowlingGameTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/IDFilterTest.java" afterDir="false" />
+    <list default="true" id="905c2962-bfb3-4845-a42f-bb8ecd6161d9" name="Changes" comment="Adding documentation">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,10 +130,19 @@
       <option name="presentableId" value="Default" />
       <updated>1757531436920</updated>
     </task>
+    <task id="LOCAL-00001" summary="Adding documentation">
+      <created>1757894059721</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1757894059721</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial committment" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial committment" />
+    <MESSAGE value="Adding documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding documentation" />
   </component>
 </project>
