@@ -1,4 +1,4 @@
-package org.example;
+package org.example.bowling;
 
 // FrameValues.java
 public class FrameValues {

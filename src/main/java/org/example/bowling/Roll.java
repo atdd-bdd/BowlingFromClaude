@@ -1,4 +1,4 @@
-package org.example;
+package org.example.bowling;
 
 public class Roll {
     private String value;

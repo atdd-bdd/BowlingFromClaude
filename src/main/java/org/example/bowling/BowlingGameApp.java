@@ -1,4 +1,4 @@
-package org.example;
+package org.example.bowling;
 
 // Interactive Bowling Game Application
 import java.util.Scanner;

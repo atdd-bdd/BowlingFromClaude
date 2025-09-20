@@ -1,0 +1,124 @@
+Feature: Dollar
+
+Scenario: Domain Term Dollar
+* Dollar Validation 
+| Input         | Valid  | Notes                                                 |
+| 1             | Yes    |                                                       |
+| $1            | Yes    |                                                       |
+| 1.00          | Yes    |                                                       |
+| 1.1           | No     | Either zero or two digits                             |
+| $-1           | Yes    | Negative                                              |
+| -$1           | Yes    | Negative                                              |
+| (1)           | Yes    | Negative (alternative form)                           |
+| ($1)          | Yes    | Negative (alternative form)                           |
+| ($1           | No     | Parathensis must match                                |
+| -($1)         | No     | Double negative                                       |
+| (-$1)         | No     | Double negative                                       |
+| 1000.01       | Yes    | Thousands                                             |
+| 1,000.01      | Yes    | Comma okay                                            |
+| 10,00.00      | No     | Commas must be in proper places (every three digits)  |
+| 1,234,567.89  | Yes    | Commas in proper places                               |
+| 1234567.89    | Yes    | Without commas                                        |
+| 1,234567.89   | No     | Must have all commas or no commas                     |
+| A             | No     | Must be numeric, comma, $, or parentheses             |
+| $12345A67.80  | No     | Contains non-numeric                                  |
+| 123$456().80  | No     | Characters in incorrect order                         |
+
+Scenario: Business Rule Dollar Input Errors 
+* Messages to show for format errors
+| Input         | Message                            |
+| 1.1           | Must be either zero or two digits  |
+| ($1           | Parathensis must match             |
+| -($1)         | Double negative                    |
+| (-$1)         | Double negative                    |
+| 10,00.00      | Commas must be every three digits  |
+| 1,234567.89   | Commas must be every three digits  |
+| A             | Non-numeric                        |
+| $12345A67.80  | Contains non-numeric               |
+| 123$456().80  | Characters in incorrect order      |
+
+
+
+Scenario: Adding money adds to total and increments count  
+Given current state is:
+| Total   | Count  |
+| $10.00  | 1      |
+When customer enters 
+| Amount |
+| 5.00   |
+Then state is now
+| Total   | Count  |
+| $15.00  | 2      |
+
+Scenario: Entering invalid amount does not change total and generates message 
+Given current state is:
+| Total   | Count  |
+| $10.00  | 1      |
+When customer enters 
+| Amount |
+| -($1)  |
+Then state is now                  
+| Total   | Count  |
+| $10.00  | 1      |
+And result shows
+| Message         |
+| Double negative | 
+
+Scenario: Entering invalid amount does not change total and shows generic message  
+Given current state is:
+| Total   | Count  |
+| $10.00  | 1      |
+When customer enters 
+| Amount |
+| -($1)  |
+Then state is now                  
+| Total   | Count  |
+| $10.00  | 1      |
+And result shows
+| Message         |
+| Invalid format  | 
+
+
+
+
+
+
+
+# Latter 
+
+
+Scenario: Domain Term Dollar 
+* Dollar Output
+| Value           | Style                         | Output               | Notes                |
+| 1.99            | Whole Number                  | $1                   | Truncate             |
+| -1.99           | Whole Number / Minus Sign     | $1                   | Truncate             |
+| -1.99           | Whole Number / Parentheses    | ($1)                 | Truncate             |
+| 1.99            | Decimal Number                | $1.99                |                      |
+| 1234567.89      | Decimal Number                | $1,234,567.89        |                      |
+| -1234567000.89  | Decimal Number / Parentheses  | ($1,234,567,000.89)  | Is there a maximum?  |
+
+
+These are for real applications 
+
+Part One 
+Implement the input validation 
+	List three ways to do it 
+	Implement one of them (or all) 
+	Store valid inputs in the Dollar object
+	Display generic message for errors 
+Part Two 
+Implement the output formatting 
+	Implement one way 
+	Try another if you'd like 
+Part Three 
+Implement the error message output for invalid input 
+	The output is just the text shown.  Where and how it's displayed can be dealt with separately. 
+	How would you change things if the output was going to be in multiple languages? 
+Part Four 
+	Add in rounding in the output, rather than truncation 
+	Allow for round up and round down 
+Part Five 
+	More than just Dollars are needed.  How would you write the scenarios for multiple currencies? 
+	How would you implement those scenarios? 
+
+

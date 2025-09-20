@@ -1,4 +1,4 @@
-package org.example;
+package org.example.bowling;
 import java.util.*;
 
 public class BowlingGame {

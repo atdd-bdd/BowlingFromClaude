@@ -1,4 +1,4 @@
-package org.example;
+package org.example.bowling;
 
 public class FrameDisplay {
     private String frame;
