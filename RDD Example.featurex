@@ -1,0 +1,152 @@
+Feature: RDD Example
+
+Scenario: Customer Story
+Given holdings are:  # ListOfObject Holding 
+| Instrument | Shares | Price   | Total     |
+| IBM        | 1000   | 25 USD  | 25000 USD |
+| Novartis   | 400    | 150 CHF | 60000 CHF |
+When totaled
+Then result is: # ListOfObject Total 
+| Overall Total |
+| 65000 USD     |
+
+Data Holding 
+| Name       | Default | DataType   | Notes |
+| Instrument |         | Instrument |       |
+| Shares     | 0       | Integer    |       |
+| Price      | 0 USD   | Money      |       |
+| Total      | 0 USD   | Money      |       |
+
+Data Total 
+| Name          | Default | DataType | Notes |
+| Overall Total | 0 USD   | Money    |       |
+
+Scenario: Customer Story with More Detail
+Given holdings are: # ListOfObject Holding 
+| Instrument | Shares | Price   | Total     |
+| IBM        | 1000   | 25 USD  | 25000 USD |
+| Novartis   | 400    | 150 CHF | 60000 CHF |
+And exchange rate is # ListOfObject ExchangeRates
+| From | To  | Rate |
+| CHF  | USD | 1.5  |
+Then totals in USD
+| Instrument | Shares | Price   | Total     | Total in USD |
+| IBM        | 1000   | 25 USD  | 25000 USD | 25000 USD    |
+| Novartis   | 400    | 150 CHF | 60000 CHF | 40000 USD    |
+And result is # ListOfObject Total 
+| Overall Total |
+| 65000 USD     |
+
+Data ExchangeRates
+| Name | Default | DataType | Notes                   |
+| From | USD     | Currency |                         |
+| To   | USD     | Currency |                         |
+| Rate | 1.0     | Decimal  | Maybe have a data type  |
+
+Scenario: Domain Term Money (used in Price, Totals, Overall Total)
+* Money is Amount and Currency
+| Amount | Currency |
+| 25000 | USD |
+| 60000 | CHF |
+
+Scenario: Domain Term Amount
+* Amount part of Money
+| Data |
+| 25000 |
+| 60000 |
+
+Scenario: Domain Term Currency
+* Currencies
+| CHF |
+| USD |
+
+Scenario: Domain Term Instrument
+* Instruments are held as investments
+| IBM      |
+| Novartis |
+
+Scenario: Customer Story Expanded
+Given holdings are:# ListOfObject Holding
+| Instrument | Shares | Price     | Total         |
+| IBM        | 1000.1 | 25.20 USD | 25,202.52 USD |
+| IBM        | 100    | 40 CHF    | 4000 CHF      |
+| Novartis   | 400    | 150 CHF   | 60000 CHF     |
+And exchange rate is # ListOfObject ExchangeRates
+| From | To  | Rate |
+| CHF  | USD | 1.52 |
+When totaled
+Then result is: # ListOfObject Total 
+| Overall Total |
+| 67307.78 USD |
+
+Scenario: Business Rule Calculations with currencies
+* Additions are: # ListOfOjbect Additions 
+| Addend1   | Addend2   | Sum       | Notes         |
+| 25000 USD | 40000 USD | 65000 USD | Same currency |
+| 60000 CHF | 37250 CHF | 97250 CHF | Same currency |
+* Multiplications are: # ListOfObject Multiplications 
+| Quantity | Money   | Result    |
+| 1000     | 25 USD  | 25000 USD |
+| 400      | 150 CHF | 60000 CHF |
+
+Data Additions 
+| Name    | Default | DataType | Notes |
+| Addend1 |  0 USD  | Money    |       |
+| Addend2 | 0 USD   | Money    |       |
+| Sum     | 0 USD   | Money    |       |
+| Notes   |         | Text     |       |
+
+Data Multiplications 
+| Name     | Default | DataType | Notes             |
+| Quantity | 0       | Integer  | Could be Decimal  |
+| Money    | 0 USD   | Money    |                   |
+| Result   | 0 USD   | Money    |                   |
+
+Scenario: Business Rule Calculations with currencies and conversion
+Given exchange rate is # ListOfObject ExchangeRates
+| From | To  | Rate |
+| CHF  | USD | 1.5  |
+* conversions are: # ListOfObject Conversions
+| From      | Result    |
+| 60000 CHF | 40000 USD |
+| 40000 USD | 60000 CHF |
+* additions are # ListOfObject AdditionsAndOutput
+| Addend 1 | Addend 2 | Output | Result | Notes |
+| 25000 USD | 60000 CHF | USD | 65000 USD | |
+| 25000 USD | 60000 CHF | CHF | 92500 CHF | Will it always be USD? |
+
+Data AdditionsAndOutput
+| Name     | Default | DataType | Notes |
+| Addend 1 | 0 USD   | Money    |       |
+| Addend 2 | 0 USD   | Money    |       |
+| Output   | USD     | Currency |       |
+| Result   | 0 USD   | Money    |       |
+| Notes    |         | Text     |       |
+
+Data Conversions 
+| Name   | Default | DataType | Notes |
+| From   | 0 USD   | Money    |       |
+| Result | 0 USD   | Money    |       |
+
+Scenario: External to internal
+* display to internal # ListOfObject DisplayInternal
+| Display   | Amount | Currency | Notes                            |
+| 25000 USD | 25000  | USD      |                                  |
+| 60000 CHF | 60000  | CHF      |                                  |
+| 25000 XXX | 0      | INV      | invalid currency                 |
+| 25000     | 25000  | USD      | USD assumed if missing currency? |
+
+Data DisplayInternal
+| Name     | Default | DataType | Notes |
+| Display  | 0       | String   |       |
+| Amount   | 0       | Amount   |       |
+| Currency | USD     | Currency |       |
+| Notes    |         | Text     |       |
+
+Scenario: Internal to display
+* internal to display # ListOfObject DisplayInternal
+| Amount | Currency | Display   | Notes            |
+| 25000  | USD      | 25000 USD |                  |
+| 60000  | CHF      | 60000 CHF |                  |
+| 0      | INV      | 25000 INV | Invalid currency |
+| 25000  | USD      | 25000 USD |                  |
