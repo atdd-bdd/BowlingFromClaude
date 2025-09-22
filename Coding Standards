@@ -1,0 +1,224 @@
+# Coding Standards Document
+
+## Core Principles
+
+### Value Objects First
+All domain concepts should be represented as Value Objects rather than primitive types to eliminate primitive obsession and improve type safety.
+
+## Method Parameters
+
+### Primary Rule: Value Objects Only
+**All method parameters must use Value Objects, never primitive types.**
+
+✅ **Good:**
+```java
+public Money calculateTotal(Shares quantity, Money price) { ... }
+public void updateExchangeRate(Currency from, Currency to, ExchangeRate rate) { ... }
+public Holding createHolding(Instrument symbol, Shares quantity, Money price) { ... }
+```
+
+❌ **Avoid:**
+```java
+public double calculateTotal(int quantity, double price) { ... }
+public void updateExchangeRate(String from, String to, double rate) { ... }
+public Object createHolding(String symbol, int quantity, double price) { ... }
+```
+
+### Constructor Exception
+**Constructors may accept primitive types for convenience and usability.**
+
+✅ **Acceptable in Constructors:**
+```java
+public Money(double amount, Currency currency) { ... }
+public Shares(int quantity) { ... }
+public Instrument(String symbol) { ... }
+```
+
+**Rationale:** Constructors are the boundary where external data enters the domain. Accepting primitives here improves ergonomics while ensuring immediate wrapping into Value Objects.
+
+## Return Types
+
+### Prefer Value Objects
+Methods should return Value Objects rather than primitives when representing domain concepts.
+
+✅ **Good:**
+```java
+public Money getPrice() { return price; }
+public Shares getQuantity() { return shares; }
+public Currency getCurrency() { return currency; }
+```
+
+❌ **Avoid:**
+```java
+public double getPrice() { return price.getAmount(); }
+public int getQuantity() { return shares.getValue(); }
+public String getCurrency() { return currency.getCode(); }
+```
+
+## Value Object Design
+
+### Immutability Required
+All Value Objects must be immutable with final fields and no setters.
+
+```java
+public class Money {
+    private final BigDecimal amount;
+    private final Currency currency;
+
+    // Constructor and getters only, no setters
+}
+```
+
+### Validation at Creation
+Value Objects should validate their state at construction time.
+
+```java
+public class Shares {
+    public Shares(BigDecimal quantity) {
+        if (quantity == null) {
+            throw new IllegalArgumentException("Shares quantity cannot be null");
+        }
+        if (quantity.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Shares quantity cannot be negative");
+        }
+        this.quantity = quantity;
+    }
+}
+```
+
+### Proper Equality Implementation
+Value Objects must implement equals() and hashCode() based on their values.
+
+```java
+@Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Money money = (Money) obj;
+    return Objects.equals(amount, money.amount) && currency == money.currency;
+}
+```
+
+## Method Design
+
+### Single Responsibility
+Each method should have one clear purpose and operate on appropriate abstraction levels.
+
+### Null Safety
+- Never accept null Value Objects as parameters
+- Use Optional<T> for potentially missing values
+- Validate parameters at method entry points
+
+```java
+// Good
+public void processHolding(Holding holding) {
+    Objects.requireNonNull(holding, "Holding cannot be null");
+    // ...
+}
+
+// Better - for optional cases
+public void processHolding(Optional<Holding> holding) {
+    holding.ifPresent(h -> {
+        // ...
+    });
+}
+```
+
+## Naming Conventions
+
+### Value Object Names
+Use domain-specific names that clearly express business concepts:
+
+✅ **Good:** `Money`, `Shares`, `Instrument`, `ExchangeRate`
+❌ **Avoid:** `Amount`, `Quantity`, `Symbol`, `Rate`
+
+### Method Names
+Use verbs that express business operations:
+
+✅ **Good:** `calculateTotal()`, `convertCurrency()`, `addHolding()`
+❌ **Avoid:** `compute()`, `transform()`, `process()`
+
+## Collections and Aggregates
+
+### Use Value Objects in Collections
+When working with collections, maintain Value Object usage:
+
+```java
+// Good
+public List<Holding> getHoldings() { ... }
+public void processHoldings(List<Holding> holdings) { ... }
+
+// Avoid
+public List<String> getSymbols() { ... }
+public void processData(List<Object[]> data) { ... }
+```
+
+## Factory Methods
+
+### Provide Convenient Creation
+Value Objects should offer factory methods for common creation patterns:
+
+```java
+public class Money {
+    public static Money dollars(double amount) {
+        return new Money(amount, Currency.USD);
+    }
+
+    public static Money parse(String display) {
+        return new Money(display);
+    }
+}
+```
+
+## Error Handling
+
+### Fail Fast with Clear Messages
+Value Objects should validate early and provide clear error messages:
+
+```java
+public class Instrument {
+    public Instrument(String symbol) {
+        if (symbol == null || symbol.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                "Instrument symbol cannot be null or empty");
+        }
+        this.symbol = symbol.trim().toUpperCase();
+    }
+}
+```
+
+## Documentation
+
+### Self-Documenting Code
+Well-designed Value Objects should make method signatures self-explanatory:
+
+```java
+// This signature clearly shows what's needed
+public Total calculatePortfolioTotal(
+    List<Holding> holdings,
+    Currency targetCurrency,
+    ExchangeRates rates
+) { ... }
+```
+
+## Testing
+
+### Test Value Object Behavior
+Ensure comprehensive testing of Value Object validation, equality, and behavior:
+
+```java
+@Test
+public void shouldRejectNegativeShares() {
+    assertThrows(IllegalArgumentException.class,
+                () -> new Shares(-100));
+}
+
+@Test
+public void shouldNormalizeInstrumentSymbol() {
+    assertEquals("IBM", new Instrument("ibm").getSymbol());
+}
+```
+
+---
+
+*This document establishes coding standards that prioritize domain expressiveness, type safety, and maintainability through consistent use of Value Objects.*

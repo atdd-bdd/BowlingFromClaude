@@ -1,4 +1,4 @@
-package org.example.rddexample;
+package org.example.rddexampleupdated;
 
 /**
  * Enum representing supported currencies
