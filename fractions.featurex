@@ -1,0 +1,104 @@
+Feature: Fractions 
+
+Feature Fractions 
+Scenario: Fraction Calculator
+Given fraction calculator is active
+When user enters “3/4 + 5/8 + 3”
+Then the total is shown as “35/8”
+
+Scenario: Fraction Calculation External Behavior
+* This is a sample of the expressions to be calculated
+| Expression    | Result |
+| 3/4 + 5/8 + 3 | 35/8   |
+
+Scenario: Expressions to Calculate
+* This is a sample of the expressions to be calculated
+| Expression | Result |
+| 3/4 + 5/8  | 11/8   |
+| 11/8 + 3   | 35/8   |
+
+Scenario: Business Rule Display to Fraction
+* Convert Display to Fraction
+| Display | Numerator | Denominator | Notes                   |
+| 3/4     | 3         | 4           | Part of expression test |
+| 5/8     | 5         | 8           | Part of expression test |
+| 3       | 3         | 1           | Whole number            |
+
+Scenario: Business Rule Fraction to Display
+* Convert Fraction to Display
+| Numerator | Denominator | Display | Notes                   |
+| 35        | 8           | 35/8    | Part of expression test |
+
+Scenario: Expressions to Calculate
+| Expression | Result |
+| 3/4 + 5/8  | 11/8   |
+
+Scenario: Display to Components
+| Expression | In1 | Op | In2 |
+| 3/4 + 5/8  | 3/4 | +  | 5/8 |
+
+Scenario: Business Rule Operations
+* Input Fractions (In1 and In2), Operator (Op), Result
+| In1  | Op | In2 | Result | Notes                   |
+| 3/4  | +  | 5/8 | 11/8   | Part of Expression Test |
+| 11/8 | +  | 3   | 35/8   | Part of Expression Test |
+
+Scenario: Domain Term Operators
+* Supported Operators
+| Symbol | Meaning        | Notes                |
+| +      | Addition       |                      |
+| *      | Multiplication | To do next iteration |
+
+Scenario: Business Rule Operations
+| In1  | Op | In2 | Result | Notes                   |
+| 3/4  | +  | 5/8 | 11/8   | Part of Expression Test |
+| 11/8 | +  | 3   | 35/8   | Part of Expression Test |
+
+Scenario: Business Rule Display to Fraction
+* Convert Display to Fraction
+| Display | Numerator | Denominator | Notes              | Question              |
+| -3      | -3        | 1           | Negative number    |                       |
+| 1/3     | 1         | 3           | Fraction           |                       |
+| 2/4     | 1         | 2           | Fraction reduced   | Should it be reduced? |
+| 1 1/3   | 4         | 3           | Whole and fraction |                       |
+
+Scenario: Business Rule Fraction to Display
+* Convert Fraction to Display
+| Numerator | Denominator | Display | Notes                | Questions              |
+| 3         | 1           | 3       | Whole Number         |                        |
+| -3        | 1           | -3      | Negative Numerator   |                        |
+| 1         | 3           | 1/3     | Fraction             |                        |
+| 3         | 3           | 1       | Whole Number         | Should it be fraction? |
+| 3         | -1          | 3/-1    | Negative Denominator | Or should it be -3/1   |
+| 3         | 2           | 3/2     | Whole plus fraction  | or should it be 1 1/2  |
+
+Scenario: Business Rule Operations
+* Inputs (In1 and In2), Operator (Op), Result
+| In1   | Op | In2   | Result | Notes                           |
+| 3     | +  | 2     | 5      | Whole Number                    |
+| 1/3   | +  | 1/3   | 2/3    | Two fractions, same denominator |
+| 1/3   | +  | 2/3   | 1      | Whole number result             |
+| 1/3   | +  | 1/2   | 5/6    | Different denominators          |
+| 1/6   | +  | 1/8   | 7/24   | Fraction and reduce             |
+| 1/4   | +  | 1/4   | 1/2    | Fraction and reduce             |
+| 1 1/3 | +  | 1 2/3 | 3      | Two whole and fractions         |
+| 3     | +  | 1/3   | 10/3   | Whole number and fraction       |
+| 1 1/4 | +  | 2 1/8 | 3 3/8  | Different whole numbers         |
+
+Scenario: Business Rule Greatest Common Multiple
+GCM used to reduce fractions to LCD (lowest common denominator)
+* GCM is the great common multiple of D1 and D2
+| D1 | D2 | GCM |
+| 4  | 8  | 4   |
+| 12 | 8  | 4   |
+| 12 | 9  | 3   |
+| 37 | 74 | 37  |
+
+Scenario: Business Rule Reduce by GCM
+* Converting fraction (InNum/InDenom) to LCD (ResNum/ResDenom)
+| InNum | InDenom | ResNum | ResDenom | Notes              |
+| 4     | 8       | 1      | 2        |                    |
+| 8     | 4       | 2      | 1        | Previous reversed  |
+| 12    | 8       | 3      | 2        | Whole and fraction |
+| 37    | 74      | 1      | 2        | Large GSM          |
+| 12    | 9       | 4      | 3        | Just another       |
