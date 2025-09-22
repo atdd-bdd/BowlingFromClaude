@@ -98,7 +98,7 @@ public class RDDExampleUpdatedTest {
 
         convertedHoldings = PortfolioCalculator.convertHoldings(holdings, Currency.USD, exchangeRates);
         HoldingWithConversion novartisConverted = convertedHoldings.get(1);
-        assertEquals("Novartis", novartisConverted.getInstrument());
+        assertEquals("NOVARTIS", novartisConverted.getInstrument());
         assertEquals(new Money(60000, Currency.CHF), novartisConverted.getTotal());
         assertEquals(new Money(40000, Currency.USD), novartisConverted.getTotalInTargetCurrency());
 
